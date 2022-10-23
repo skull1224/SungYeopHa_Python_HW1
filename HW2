@@ -1,1 +1,246 @@
+#단순연결리스트 응용예제1
 
+class Node():
+    def __init__(self):
+        self.data = None
+        self.link = None
+
+current,head,pre,memory = None,None,None,None
+memory=[]
+dataarr=[]
+
+
+def printnode(start):
+    current = start
+    if current.link == None:
+        print(head.data, end = ' ')
+        return
+    while current.link != None :
+        current = current.link
+        print(current.data, end = ' ')
+    print()
+
+def simplelist(data):
+    global memory,head,current,pre
+    node=Node()
+    node.data= data
+    if head == None:
+        head = node
+        return
+    if head.data[1]>data[1]:
+        node.link=head
+        head = node
+        return
+    current = head
+    while current.link != None:
+        pre=current
+        current=current.link
+        if current.data[1] > data[1]:
+            pre.link=node
+            node.link=node
+            node.link=current
+            return
+    current.link=node
+    
+
+if __name__ == "__main__":
+    while True:
+        name = input("이름-->")
+        if(name == ''):
+            break
+        mail = input("이메일-->")
+        dataarr.append([name,mail])    
+        for data in dataarr:
+            simplelist(data)
+        printnode(head)
+
+# 원형 연결리스트 수업자료 응용예제 #2
+
+from math import *
+from random import*
+
+class Node():
+    def __init__(self):
+        self.data = None
+        self.link = None
+
+current,head,pre,memory = None,None,None,None
+memory=[]
+dataarr=[]
+distance1=[]
+namemarket=["A","B","C","D","E","F","G","H","I","J"]
+
+def printnode(start):
+        current=start
+        if current.link == None:
+            return
+        print(current.data, end = ' ')
+        while current.link != start:
+            current=current.link
+            print(current.data,end=' ')
+        print()
+
+if __name__ == "__main__":
+    
+    for i in range(0, 10):
+        x=randint(1,100)
+        y=randint(1,100)
+        distance = sqrt(x**2+y**2)
+        dataarr.append((namemarket[i],x,y))
+        distance1.append((namemarket[i]+"편의점 거리 :",distance))
+        distance1.sort(key=lambda x:x[1])
+    node = Node()
+    node.data = distance1[0]
+    head = node
+    node.link=head
+    memory.append(node)
+    
+    for data in distance1[1:]:
+        pre = node
+        node = Node()
+        node.data = data
+        pre.link = node
+        node.link = head
+        memory.append(node)
+    
+    printnode(head)
+
+# 스택 응용예제2
+reverse1=''
+def isstackfull():
+    global SIZE,stack,top
+    if top >=SIZE-1 :
+        return True
+    else : return False
+
+def isstackempty():
+    global SIZE,stack,top
+    if top==-1:
+        return True
+    else:
+        return False
+
+def push(data,i):
+    global SIZE, stack, top,reverse1
+    if (isstackfull()):
+        print("stack is full")
+        return
+    top +=1
+    stack[top]=data
+    print(stack[top])
+    a = memory[i]
+    stack[top]=a[::-1]
+    
+def pop():
+    global SIZE, stack, top
+    if (isstackempty()):
+        print("stack is empty")
+        return
+
+    data = stack[top]
+    stack[top]=None
+    top-=1
+    print()
+    return data
+SIZE = 5
+top=-1
+memory=[]
+stack=[None for _ in range(SIZE)]
+if __name__ == "__main__":
+    f = open('c:/Users/sung/Desktop/진달래꽃.txt','rt',encoding='utf-8')
+    f.readline()
+    memory.append(f.readline())
+    memory.append(f.readline())
+    memory.append(f.readline())
+    memory.append(f.readline())
+    i=0
+    print("-----원본-----")
+    for data in memory :
+        push(data,i)
+        i+=1
+    print("-----거꾸로 처리된 결과-----")
+    for i in memory :
+        print(pop())
+    f.close()
+    f = open("진달래꽃.txt","rt")
+    f.close()
+    
+    #큐 수업자료 응용예제 2
+
+queue = [None,None,None,None,None]
+front = rear = 0
+waitingtime = 0
+
+def isqueuefull():
+    global SIZE, queue,front,rear
+    if((rear+1)%SIZE == front):
+        return True
+    else :
+        return False
+def isqueueempty():
+    global SIZE, queue,front,rear
+    if(front == rear):
+        return True
+    else :
+        return False
+    
+def enqueue(data):
+    global SIZE, queue,front,rear
+    if(isqueuefull()):
+        print("queue is full")
+        return
+    rear = (rear+1)%SIZE
+    queue[rear]=data
+
+def dequeue():
+    global SIZE, queue,front,rear
+    if (isqueueempty()):
+        print("queue is empty")
+        return None
+    front = (front+1)%SIZE
+    data = queue[front]
+    queue[front]=None
+    return data
+def peek():
+    global SIZE, queue,front,rear
+    if(isqueueempty()):
+        print("queue is empty")
+        return None
+    return queue[(front+1)%SIZE]
+def waitingcac(data):
+    global SIZE, queue,front,rear,waitingtime
+    waitingtime += data
+    return waitingtime
+SIZE = 6
+queue = [None for _ in range(SIZE)]
+front = rear = 0
+
+
+if __name__ == "__main__":
+    select = input("사용(U) 고장(E) 환불(R) 대기시간(W) 종료(X) 중 하나를 선택 -->")
+    
+    while (isqueuefull()==False):
+        if select == ('U'):
+            data = ('사용',9)
+            time = 9
+            enqueue(data)
+            waitingcac(time)
+            print("귀하의 대기시간은"+ str(waitingtime)+ "분 입니다.")
+            print(queue)
+        elif select == ('E'):
+            data = ('고장',3)
+            enqueue(data)
+            waitingcac(3)
+            print("귀하의 대기시간은"+ str(waitingtime)+ "분 입니다.")
+            print(queue)
+        elif select == ('R'):
+            data = ('환불',4)
+            enqueue(data)
+            waitingcac(4)
+            print("귀하의 대기시간은"+ str(waitingtime)+ "분 입니다.")
+            print(queue)
+        else :
+            print("wrong enter")
+        select = input("사용(U) 고장(E) 환불(R) 중 하나를 선택 -->")
+print("최종대기 콜 -->",queue)
+print("프로그램 종료!")
