@@ -1,21 +1,20 @@
 #단순연결리스트 응용예제1
 i=0
 
+current,head,pre = None,None,None
+memory=[]
+dataarr=[]
+
 class Node():
     def __init__(self):
         self.data = None
         self.link = None
 
-current,head,pre,memory = None,None,None,None
-memory=[]
-dataarr=[]
-
-
 def printnode(start):
     current = start
-    if current.link == None:
-        print(head.data, end = ' ')
+    if current == None:
         return
+    print(head.data, end = ' ')
     while current.link != None :
         current = current.link
         print(current.data, end = ' ')
@@ -52,9 +51,9 @@ if __name__ == "__main__":
         mail = input("이메일-->")
         dataarr.append([name,mail])    
         simplelist(dataarr[i])
-        i+=1
         printnode(head)
-        print()    
+        i+=1
+        print()  
 
 # 원형 연결리스트 수업자료 응용예제 #2
 
